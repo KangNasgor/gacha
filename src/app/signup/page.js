@@ -33,7 +33,8 @@ export default function Signup(){
                     password : password,
                 })
             });
-
+            localStorage.setItem('user-email', email)
+            window.location.href = '/auth';
         }
         catch(err){
             console.log("Error :" + err)
