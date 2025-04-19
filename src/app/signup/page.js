@@ -11,9 +11,7 @@ export default function Signup(){
 
     const submitForm = async (e) => {
         e.preventDefault();
-
         setError("");
-
         const validations = [
             { check : username.length < 5, message: 'Username tidak boleh dibawah 5 karakter!' },
             { check : password.length < 8, message: 'Password tidak boleh dibawah 8 karakter!' },
@@ -36,7 +34,6 @@ export default function Signup(){
                 })
             });
 
-            window.location.reload();
         }
         catch(err){
             console.log("Error :" + err)
