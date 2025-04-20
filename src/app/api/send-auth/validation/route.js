@@ -1,17 +1,38 @@
 import { NextResponse } from "next/server";
-import { validateOTP, otpStorage } from "../otp";
+import { validateOTP } from "../otp";
+import { connectDB } from "@/app/mysql/route";
 
 export async function POST(req){
     const { email, otp } =  await req.json();
+    const connection = await connectDB();
+    const [rows] = await connection.execute(
+        'SELECT * FROM otp_codes WHERE email = ?',
+        [email]
+    );
     if(!email || !otp){
-        return NextResponse.json({message : 'Missing data'});
+        return NextResponse.json({ success : false, message : 'Data not found' });
     }
-    if(otpStorage[email].otp !== otp){
-        return NextResponse.json({message : 'Invalid OTP'});
+    if(rows.length > 0){
+        const storedOTP = rows[0];
+        if(storedOTP.otp !== otp){
+            return NextResponse.json({ success : false, message :  'OTP salah'});
+        }
+        const validation = validateOTP(email, otp);
+        if(validation === false){
+            return NextResponse.json({ success : false, message : 'OTP salah atau OTP kadaluwarsa' });
+        }
+        await connection.execute(
+            'UPDATE users SET verified = true WHERE email = ?',
+            [email]
+        );
+        await connection.execute(
+            'DELETE FROM otp_codes WHERE email = ?',
+            [email]
+        );
+        await connection.end();
+
+        return NextResponse.json({ success : true, message : 'Account verified' });
     }
 
-    validateOTP(email, otp);
-
-    localStorage.removeItem('user-email');
-    otpStorage[email] = {};
+    return NextResponse.json({ success : false, message : 'Data not found' });
 }

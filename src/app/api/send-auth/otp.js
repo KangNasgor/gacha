@@ -1,20 +1,34 @@
-const otpStorage = {};
+import { connectDB } from "@/app/mysql/route";
 
 const generateOTP = () => {
     const otp =  Math.floor(100000 + Math.random() * 900000);
     return otp.toString();
 }
 
-const storeOTP = (email, otp) => {
+const storeOTP = async (email, otp) => {
     const expirationDate = Date.now() + 5 * 60 * 1000;
-    otpStorage[email] = {otp, expirationDate};
+    const connection = await connectDB();
+    const [rows] = await connection.execute(
+        'INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)',
+        [email, otp, new Date(expirationDate)]
+    );
+
+    await connection.end();
 }
 
-const validateOTP = (email, otp) => {
-    const storedOtp = otpStorage[email].otp;
-    if(storedOtp && storedOtp.otp === otp && Date.now() < storedOtp.expirationDate){
+const validateOTP = async (email, otp) => {
+    const connection = await connectDB();
+    const [rows] = await connection.execute(
+        'SELECT * FROM otp_codes WHERE email = ?',
+        [email]
+    );
+    const storedOtp = rows[0].otp;
+    const expirationDate = rows[0].expires_at;
+    if(storedOtp && storedOtp.otp === otp && Date.now() < expirationDate){
         return true;
     }
+
     return false;
 }
+
 export {generateOTP, storeOTP, validateOTP, otpStorage};

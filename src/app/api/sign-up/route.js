@@ -17,6 +17,7 @@ export async function POST(req){
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({email})
         })
+        
         await connection.end();
 
         return NextResponse.json({
