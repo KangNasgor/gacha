@@ -33,6 +33,10 @@ export default function Signup(){
                     password : password,
                 })
             });
+            const data = await res.json();
+            if(data.success === false){
+                return setError(data.message);
+            }
             localStorage.setItem('user-email', email)
             window.location.href = '/auth';
         }

@@ -7,6 +7,16 @@ export async function POST(req){
     const {username, email, password} = body;
     const connection = await connectDB();
     try{
+        const [sameAccount] = await connection.execute(
+            'SELECT * FROM users WHERE email = ?',
+            [email]
+        );
+        if(sameAccount.length > 0){
+            return NextResponse.json({
+                success : false,
+                message : 'Email already exist!'
+            });
+        }
         const [rows] = await connection.execute(
             'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
             [username, email, password]
@@ -17,7 +27,7 @@ export async function POST(req){
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({email})
         })
-        
+
         await connection.end();
 
         return NextResponse.json({
