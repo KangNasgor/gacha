@@ -22,13 +22,12 @@ const validateOTP = async (email, otp) => {
         'SELECT * FROM otp_codes WHERE email = ?',
         [email]
     );
-    const storedOtp = rows[0].otp;
     const expirationDate = rows[0].expires_at;
-    if(storedOtp && storedOtp.otp === otp && Date.now() < expirationDate){
+    console.log(expirationDate);
+    if(Date.now() < expirationDate){
         return true;
     }
-
     return false;
 }
 
-export {generateOTP, storeOTP, validateOTP, otpStorage};
+export {generateOTP, storeOTP, validateOTP};

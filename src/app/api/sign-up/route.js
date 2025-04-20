@@ -1,6 +1,6 @@
 import { connectDB } from "@/app/mysql/route";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import bcrypt from 'bcrypt';
 
 export async function POST(req){
     const body = await req.json();
@@ -17,9 +17,10 @@ export async function POST(req){
                 message : 'Email already exist!'
             });
         }
+        const hashedPassword = await bcrypt.hash(password, 10);
         const [rows] = await connection.execute(
             'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-            [username, email, password]
+            [username, email, hashedPassword]
         )
 
         await fetch(`http://localhost:3000/api/send-auth`,{

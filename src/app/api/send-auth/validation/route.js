@@ -13,17 +13,17 @@ export async function POST(req){
         return NextResponse.json({ success : false, message : 'Data not found' });
     }
     if(rows.length > 0){
-        const storedOTP = rows[0];
-        if(storedOTP.otp !== otp){
-            return NextResponse.json({ success : false, message :  'OTP salah'});
+        const storedOTP = rows[0].otp;
+        if(storedOTP !== otp){
+            return NextResponse.json({ success : false, message : 'OTP salah' });
         }
         const validation = validateOTP(email, otp);
         if(validation === false){
-            return NextResponse.json({ success : false, message : 'OTP salah atau OTP kadaluwarsa' });
+            return NextResponse.json({ success : false, message : 'OTP kadaluwarsa' });
         }
         await connection.execute(
             'UPDATE users SET verified = true WHERE email = ?',
-            [email]
+            [email] 
         );
         await connection.execute(
             'DELETE FROM otp_codes WHERE email = ?',
