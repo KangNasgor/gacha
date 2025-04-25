@@ -23,8 +23,8 @@ const validateOTP = async (email, otp) => {
         [email]
     );
     const expirationDate = rows[0].expires_at;
-    console.log(expirationDate);
-    if(Date.now() < expirationDate){
+    const expirationDateTime = new Date(expirationDate).getTime();
+    if(Date.now() < expirationDateTime){
         return true;
     }
     return false;

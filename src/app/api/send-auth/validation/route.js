@@ -17,7 +17,7 @@ export async function POST(req){
         if(storedOTP !== otp){
             return NextResponse.json({ success : false, message : 'OTP salah' });
         }
-        const validation = validateOTP(email, otp);
+        const validation = await validateOTP(email, otp);
         if(validation === false){
             return NextResponse.json({ success : false, message : 'OTP kadaluwarsa' });
         }

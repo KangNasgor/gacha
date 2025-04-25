@@ -85,7 +85,7 @@ export default function Home() {
             }}
             data-aos="fade-left"
             data-aos-duration="1000"
-            onClick={getWaifu}
+            onClick={() => console.log(Date.now())}
           >
             Log In
           </button>
