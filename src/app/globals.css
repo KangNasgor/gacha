@@ -51,3 +51,9 @@ body {
   background-position: center;
   background-size: cover;
 }
+
+.bg-malenia {
+  background-image: url('/assets/malenia.jpg');
+  background-position: center;
+  background-size: cover;
+}

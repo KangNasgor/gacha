@@ -11,7 +11,7 @@ export default function ProgressBar(){
     useEffect(() => {
         nProgress.start();
         nProgress.done();
-    }, []);
+    }, [pathname]);
 
     return null;
 }

@@ -67,28 +67,12 @@ export default function Home() {
           Website buat lu para gooners.
         </h1>
         <div className="flex gap-5">
-          <Link
-            href="/signup"
-            className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110"
-            style={{
-              transition: "0.3s",
-            }}
-            data-aos="fade-left"
-            data-aos-duration="1000"
-          >
+          <Link href="/signup" className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s" }} data-aos="fade-left" data-aos-duration="1000">
             Sign Up
           </Link>
-          <button
-            className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110"
-            style={{
-              transition: "0.3s",
-            }}
-            data-aos="fade-left"
-            data-aos-duration="1000"
-            onClick={() => console.log(Date.now())}
-          >
+          <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
             Log In
-          </button>
+          </Link>
         </div>
       </div>
     </div>
