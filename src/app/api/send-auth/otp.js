@@ -6,7 +6,7 @@ const generateOTP = () => {
 }
 
 const storeOTP = async (email, otp) => {
-    const expirationDate = Date.now() + 5 * 1000;
+    const expirationDate = Date.now() + 5 * 60 * 1000;
     const connection = await connectDB();
     const [rows] = await connection.execute(
         'INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)',

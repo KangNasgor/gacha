@@ -14,12 +14,34 @@ export default function Login(){
 
     const submitForm = async (e) => {
         e.preventDefault();
+        setError('');
+
+        try{
+            const res = await fetch('/api/log-in', {
+                method : 'POST',
+                headers : { 'Content-Type' : 'application/json' },
+                body : JSON.stringify({
+                    password : password,
+                    username : username,
+                }),
+            });
+
+            const data = await res.json();
+            if(data.success === false){
+                return setError('Error : ' + data.message);
+            }
+        }
+        catch(err){
+            setError('Error : ' + err);
+        }
     }
     return(
         <div className="bg-texture-1 h-screen flex flex-col gap-4 justify-center items-center">
             <h1 className="text-5xl font-fun">Login dulu</h1>
             <div className="bg-red-300 rounded-lg flex p-4 gap-8 items-center justify-start w-6/12">
-                <Image src='/assets/malenia.jpg' width={350} height={500} alt="Malenia, Blade of Miquella" className="rounded-md"/>
+                <div className="relative w-full h-64">
+                    <Image src='/assets/malenia.jpg' fill={true} sizes="(max-width : 768px) 100vw, 50vw" alt="Malenia, Blade of Miquella" className="object-cover object-right rounded-md "/>
+                </div>
                 <form onSubmit={submitForm} className="flex flex-col justify-center items-center gap-5 w-fit">
                     <div className="flex flex-col gap-3">
                         <div>
