@@ -1,4 +1,5 @@
 import "./globals.css";
+import ProgressBar from "./progressbar";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,9 +15,8 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body
-        className={`antialiased`}
-      >
+      <body className={`antialiased`}>
+        <ProgressBar />
         {children}
       </body>
     </html>
