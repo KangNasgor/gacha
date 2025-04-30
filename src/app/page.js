@@ -10,37 +10,26 @@ export default function Home() {
     AOS.init();
   }, []);
 
-  const getWaifu = () => {
-    var query = `query ($id: Int) {
-      Media (id: $id, type: ANIME) {
-          id
-          title {
-              romaji
-              english
-              native
-          }
-      }
-      }`;
+  const [loggedIn, setLoggedIn] = useState(false);
 
-    var url = "https://graphql.anilist.co",
-      options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          query: query,
-          variables: {
-            id: 15125
-          },
-        }),
-      };
-    fetch(url, options)
-      .then((res) => res.json())
-      .then(data => console.log(data))
-      .catch((err) => console.log(err));
-  };
+  useEffect(() => {
+    const checkAuth = async () => {
+      const response = await fetch('/api/auth-check', {
+        method : 'GET',
+        credentials : "include",
+      });
+
+      const data = await response.json();
+      if(data.loggedIn === false){
+        return false;
+      }
+
+      setLoggedIn(true);
+      return true;
+    }
+
+    checkAuth();
+  }, []);
 
   return (
     <div className="h-screen bg-texture-1 flex justify-center items-center">
@@ -66,14 +55,26 @@ export default function Home() {
         >
           Website buat lu para gooners.
         </h1>
-        <div className="flex gap-5">
-          <Link href="/signup" className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s" }} data-aos="fade-left" data-aos-duration="1000">
-            Sign Up
-          </Link>
-          <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
-            Log In
-          </Link>
-        </div>
+        {
+          loggedIn === false ? 
+          (
+                    <div className="flex gap-5">
+                      <Link href="/signup" className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s" }} data-aos="fade-left" data-aos-duration="1000">
+                        Sign Up
+                      </Link>
+                      <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
+                        Log In
+                      </Link>
+                  </div>
+          ) :
+          (        
+          <div className="flex gap-5">
+            <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
+              PLAY!
+            </Link>
+          </div>
+          )
+        }
       </div>
     </div>
   );

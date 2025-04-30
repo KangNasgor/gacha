@@ -30,6 +30,8 @@ export default function Login(){
             if(data.success === false){
                 return setError('Error : ' + data.message);
             }
+
+            window.location.href = "/";
         }
         catch(err){
             setError('Error : ' + err);
