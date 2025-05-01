@@ -1,23 +1,32 @@
 import { NextResponse } from "next/server";
 
 export async function POST(){
-  const randomID = Math.floor(Math.random() * 20000) + 1;
-  var query = `query ($id: Int) {
-    Character (id: $id) {
+  const randomPage = Math.floor(Math.random() * 10) + 1;
+  var query = `
+  query ($page : Int){
+    Page(page : $page, perPage : 5) {
+      media(sort : START_DATE_DESC, type : ANIME) {
         id
-        name {
-            full
-            native
+        title {
+          romaji
         }
-        image{
-            large
-            medium
+        characters(perPage : 5, sort : FAVOURITES_DESC) {
+          nodes {
+            name {
+              full
+              native
+            }
+            gender
+            description
+            image {
+              medium
+            }  
+          }
         }
-        gender
-        age
-        description
+      }
     }
-    }`;
+  }
+  `;
   var url = "https://graphql.anilist.co",
     options = {
       method: "POST",
@@ -27,19 +36,23 @@ export async function POST(){
       },
       body: JSON.stringify({
         query: query,
-        variables: {
-          id: randomID
-        },
+        variables : {
+          page : randomPage
+        }
       }),
     };
   try{
     const response = await fetch(url, options);
     const data = await response.json();
-    return NextResponse.json(data);
+    const media = data.data.Page.media;
+    const characters = media.flatMap(media => media.characters.nodes);
+    const waifus = characters.filter(char => char.gender === "Female");
+    const randomWaifu = waifus[Math.floor(Math.random() * waifus.length)]
+    return NextResponse.json(randomWaifu);
   }
   catch(err){
     return NextResponse.json({
-      error : "fetching waifu failed, sorry :(",
+      error : "Error : " + err,
       status: 500,
     });
   }
