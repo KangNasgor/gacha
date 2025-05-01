@@ -57,23 +57,20 @@ export default function Home() {
         </h1>
         {
           loggedIn === false ? 
-          (
-                    <div className="flex gap-5">
-                      <Link href="/signup" className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s" }} data-aos="fade-left" data-aos-duration="1000">
-                        Sign Up
-                      </Link>
-                      <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
-                        Log In
-                      </Link>
-                  </div>
-          ) :
-          (        
-          <div className="flex gap-5">
-            <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
-              PLAY!
-            </Link>
-          </div>
-          )
+            (<div className="flex gap-5">
+                <Link href="/signup" className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s" }} data-aos="fade-left" data-aos-duration="1000">
+                  Sign Up
+                </Link>
+                <Link href='/login' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
+                  Log In
+                </Link>
+              </div>) 
+            :
+            (<div className="flex gap-5">
+              <Link href='/gacha' className="bg-red-300 rounded-md px-3 mt-5 py-2 font-fun text-2xl hover:scale-110" style={{ transition: "0.3s"}} data-aos="fade-left" data-aos-duration="1000">
+                PLAY!
+              </Link>
+            </div>)
         }
       </div>
     </div>

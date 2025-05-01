@@ -1,4 +1,4 @@
-import { connectDB } from "@/app/mysql/route";
+import { connectDB } from "@/app/api/mysql/route";
 
 const generateOTP = () => {
     const otp =  Math.floor(100000 + Math.random() * 900000);

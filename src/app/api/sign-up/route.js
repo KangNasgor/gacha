@@ -1,4 +1,4 @@
-import { connectDB } from "@/app/mysql/route";
+import { connectDB } from "@/app/api/mysql/route";
 import { NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 

@@ -1,17 +1,23 @@
 import { NextResponse } from "next/server";
 
 export async function POST(){
+  const randomID = Math.floor(Math.random() * 20000) + 1;
   var query = `query ($id: Int) {
-    Media (id: $id, type: ANIME) {
+    Character (id: $id) {
         id
-        title {
-            romaji
-            english
+        name {
+            full
             native
         }
+        image{
+            large
+            medium
+        }
+        gender
+        age
+        description
     }
     }`;
-
   var url = "https://graphql.anilist.co",
     options = {
       method: "POST",
@@ -22,13 +28,13 @@ export async function POST(){
       body: JSON.stringify({
         query: query,
         variables: {
-          id: 15125
+          id: randomID
         },
       }),
     };
   try{
     const response = await fetch(url, options);
-    const data = response.json();
+    const data = await response.json();
     return NextResponse.json(data);
   }
   catch(err){

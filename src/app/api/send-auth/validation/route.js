@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { validateOTP } from "../otp";
-import { connectDB } from "@/app/mysql/route";
+import { connectDB } from "@/app/api/mysql/route";
 
 export async function POST(req){
     const { email, otp } =  await req.json();
