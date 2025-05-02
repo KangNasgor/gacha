@@ -50,7 +50,7 @@ export default function Login(){
                             <h1 className="font-fun text-xl inline-block">Username</h1>
                             <div className="bg-white font-fun text-black px-3 py-1 w-fit rounded-md flex items-center gap-2">
                                 <input placeholder="John Kennedy" className="focus:outline-0" value={username} onChange={(e) => setUsername(e.target.value)} required/>
-                                <FontAwesomeIcon icon={faUser}/>
+                                <FontAwesomeIcon icon={faUser} className="w-5"/>
                             </div>
                         </div>
                         <div>
