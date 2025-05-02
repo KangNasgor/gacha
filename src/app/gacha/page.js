@@ -1,10 +1,11 @@
 'use client'
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Gacha(){
     const[waifu, setWaifu] = useState(null);
+    const [title, setTitle] = useState(null);
 
     const getWaifu = async () => {
         try{
@@ -12,7 +13,8 @@ export default function Gacha(){
                 method : "POST"
             });
             const data = await res.json();
-            setWaifu(data);
+            setWaifu(data.randomWaifu);
+            setTitle(data.animeTitle);
         }
         catch(err){ 
             console.log(err);
@@ -24,15 +26,17 @@ export default function Gacha(){
             <button onClick={getWaifu} className="font-fun text-4xl">GACHA</button>
             {
                 waifu && (
-                <div className="mx-auto rounded-md bg-red-500 p-5 w-6/12 flex gap-5">
-                    <div className="w-6/12 relative aspect-square">
-                        <Image src={waifu.image.medium} height={300} width={300} alt={`Image of ${waifu.name.full}`} className="object-contain"/>
+                <div className="mx-auto rounded-md bg-red-500 p-5 w-10/12 flex overflow-hidden">
+                    <div className="w-4/12 relative aspect-square">
+                        <Image src={waifu.image.medium === null ? waifu.image.large : waifu.image.medium} height={300} width={300} alt={`Image of ${waifu.name.full}`} className="object-contain"/>
                     </div>
-                    <div className="w-6/12">
+                    <div className="w-8/12">
                         <h1 className="font-fun text-4xl">{waifu.name.full}</h1>
                         <h1 className="font-fun text-2xl">{waifu.name.native}</h1>
+                        <h1 className="font-fun text-2xl">Anime : {title}</h1>
                         <h1 className="font-fun text-xl">Gender : {waifu.gender === null ? 'null' : waifu.gender}</h1>
-                        <div className={`h-[400px] overflow-y-scroll mt-5 hide-scrollbar`}>
+                        <h1 className="font-fun text-lg mt-3">Description :</h1>
+                        <div className={`h-[400px] overflow-y-scroll mt-2 hide-scrollbar`}>
                             <p className="font-fun text-lg">{waifu.description === null ? 'No Description Available.' : waifu.description}</p>
                         </div>
                     </div>

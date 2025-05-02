@@ -4,13 +4,10 @@ export async function POST(){
   const randomPage = Math.floor(Math.random() * 10) + 1;
   var query = `
   query ($page : Int){
-    Page(page : $page, perPage : 5) {
+    Page(page : $page, perPage : 25) {
       media(sort : START_DATE_DESC, type : ANIME) {
         id
-        title {
-          romaji
-        }
-        characters(perPage : 5, sort : FAVOURITES_DESC) {
+        characters(perPage : 50, sort : FAVOURITES_DESC) {
           nodes {
             name {
               full
@@ -20,7 +17,15 @@ export async function POST(){
             description
             image {
               medium
-            }  
+              large
+            } 
+            media {
+              nodes{
+                title {
+                  english
+                }
+              }
+            }   
           }
         }
       }
@@ -48,13 +53,15 @@ export async function POST(){
 
     const characters = media.flatMap(media => media.characters.nodes);
     const waifus = characters.filter(char => char.gender === "Female");
-    const randomWaifu = waifus[ Math.floor(Math.random() * waifus.length) ]
+    const randomWaifu = waifus[Math.floor(Math.random() * waifus.length)]
 
-    return NextResponse.json(randomWaifu);
+    const title = randomWaifu.media.nodes.map(item => item.title.english);
+    const animeTitle = title[0];
+    return NextResponse.json({randomWaifu, animeTitle});
   }
   catch(err){
     return NextResponse.json({
-      error : "Error : " + err,
+      error : "Error : " + err.message,
       status: 500,
     });
   }
