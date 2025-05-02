@@ -45,9 +45,11 @@ export async function POST(){
     const response = await fetch(url, options);
     const data = await response.json();
     const media = data.data.Page.media;
+
     const characters = media.flatMap(media => media.characters.nodes);
     const waifus = characters.filter(char => char.gender === "Female");
-    const randomWaifu = waifus[Math.floor(Math.random() * waifus.length)]
+    const randomWaifu = waifus[ Math.floor(Math.random() * waifus.length) ]
+
     return NextResponse.json(randomWaifu);
   }
   catch(err){
