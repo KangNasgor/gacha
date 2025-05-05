@@ -4,10 +4,10 @@ export async function POST(){
   const randomPage = Math.floor(Math.random() * 10) + 1;
   var query = `
   query ($page : Int){
-    Page(page : $page, perPage : 25) {
+    Page(page : $page, perPage : 50) {
       media(sort : START_DATE_DESC, type : ANIME) {
         id
-        characters(perPage : 50, sort : FAVOURITES_DESC) {
+        characters(perPage : 75) {
           nodes {
             name {
               full

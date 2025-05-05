@@ -66,3 +66,57 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes gachaResultModalAnimationStart {
+  0%{
+    opacity: 0.5;
+    scale: 0;
+  }
+  100%{
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes gachaResultModalAnimationFinish {
+  0%{
+    opacity: 1;
+    scale: 1;
+  }
+  100%{
+    opacity: 0;
+    scale: 0;
+  }
+}
+
+@keyframes gachaResultContainerAnimationStart {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+@keyframes gachaResultContainerAnimationFinish {
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+.gacha-result-animation-open {
+  animation : gachaResultModalAnimationStart 0.5s forwards;
+}
+.gacha-result-animation-close {
+  animation : gachaResultModalAnimationFinish 0.5s forwards;
+}
+
+.gacha-result-container-animation-open {
+  animation: gachaResultContainerAnimationStart 0.5s forwards;
+}
+.gacha-result-container-animation-close {
+  animation: gachaResultContainerAnimationFinish 0.5s forwards;
+}
