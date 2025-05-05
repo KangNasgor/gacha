@@ -36,7 +36,7 @@ export default function Gacha(){
                         <h1 className="font-fun text-2xl">Anime : {title}</h1>
                         <h1 className="font-fun text-xl">Gender : {waifu.gender === null ? 'null' : waifu.gender}</h1>
                         <h1 className="font-fun text-lg mt-3">Description :</h1>
-                        <div className={`h-[400px] overflow-y-scroll mt-2 hide-scrollbar`}>
+                        <div className={`h-[200px] overflow-y-scroll hide-scrollbar`}>
                             <p className="font-fun text-lg">{waifu.description === null ? 'No Description Available.' : waifu.description}</p>
                         </div>
                     </div>
