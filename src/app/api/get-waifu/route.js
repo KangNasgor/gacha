@@ -48,7 +48,7 @@ export async function POST(){
       }),
     };
 
-  const anilistFetching = async () => {
+  const fetchAnilist = async () => {
     const res = await fetch(url, options);
     const data = await res.json();
     const media = data.data.Page.media;
@@ -59,8 +59,9 @@ export async function POST(){
 
     return {selectedWaifu, title};
   }
-  const MALfetching = async () => {
-    const res = await fetch(`https://api.jikan.moe/v4/characters?page=${randomPage}`, {
+
+  const fetchMAL = async (page = 1) => {
+    const res = await fetch(`https://api.jikan.moe/v4/characters?page=${page}`, {
       headers : {
         'Content-Type' : 'application/json',
         Accept : 'application/json',
@@ -74,10 +75,13 @@ export async function POST(){
 
     return waifu;
   }
+
   try{
-    const waifuAnilist = anilistFetching();
-    const waifuMAL = MALfetching();
-    const waifus = [(await waifuAnilist).selectedWaifu, await waifuMAL];
+    const [anilistWaifu, malWaifu] = await Promise.all([
+      fetchAnilist(),
+      fetchMAL(randomPage),
+    ]);
+    const waifus = [anilistWaifu.selectedWaifu, malWaifu];
     const selectedWaifu = waifus[Math.floor(Math.random() * waifus.length)];
     const title = (await waifuAnilist).title;
     return NextResponse.json({selectedWaifu, title});
