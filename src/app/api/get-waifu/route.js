@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
 
-var waifuBeforeHolder = null;
-var lockedWaifus = [];
-
 export async function POST(){
   const randomPage = Math.floor(Math.random() * 10) + 1;
+
   var query = `
   query ($page : Int){
-    Page(page : $page, perPage : 50) {
+    Page(page : $page, perPage : 25) {
       media(sort : START_DATE_DESC, type : ANIME) {
         id
-        characters(perPage : 75) {
+        characters(perPage : 50) {
           nodes {
             name {
               full
@@ -20,7 +18,6 @@ export async function POST(){
             description
             image {
               medium
-              large
             } 
             media {
               nodes{
@@ -35,6 +32,7 @@ export async function POST(){
     }
   }
   `;
+
   var url = "https://graphql.anilist.co",
     options = {
       method: "POST",
@@ -49,22 +47,40 @@ export async function POST(){
         }
       }),
     };
-  try{
-    lockedWaifus.push(waifuBeforeHolder);
-    const response = await fetch(url, options);
-    const data = await response.json();
-    const media = data.data.Page.media;
 
+  const anilistFetching = async () => {
+    const res = await fetch(url, options);
+    const data = await res.json();
+    const media = data.data.Page.media;
     const characters = media.flatMap(media => media.characters.nodes);
     const waifus = characters.filter(char => char.gender === "Female");
-    const waifuIds = waifus.map(char => char.id);
-    const filterWaifu = waifus.filter(char => !lockedWaifus.includes(char.id));
-    const randomWaifu = filterWaifu[Math.floor(Math.random() * filterWaifu.length)];
+    const selectedWaifu = waifus[Math.floor(Math.random() * waifus.length)];
+    const title = waifus.media?.nodes?.[0].title.english; // check if the waifu is fetched from anilist api, it will search for the title
 
-    const title = randomWaifu.media.nodes.map(item => item.title.english);
-    const animeTitle = title[0];
-    waifuBeforeHolder = randomWaifu;
-    return NextResponse.json({randomWaifu, animeTitle});
+    return {selectedWaifu, title};
+  }
+  const MALfetching = async () => {
+    const res = await fetch(`https://api.jikan.moe/v4/characters?page=${randomPage}`, {
+      headers : {
+        'Content-Type' : 'application/json',
+        Accept : 'application/json',
+      }
+    }); 
+    const data = await res.json();
+    const selectedWaifu = data.data[Math.floor(Math.random() * data.data.length)];
+    const resWaifu = await fetch(`https://api.jikan.moe/v4/characters/${selectedWaifu.mal_id}/full`, {Accept : 'application/json'});
+    const dataWaifu = await resWaifu.json();
+    const waifu = dataWaifu.data;
+
+    return waifu;
+  }
+  try{
+    const waifuAnilist = anilistFetching();
+    const waifuMAL = MALfetching();
+    const waifus = [(await waifuAnilist).selectedWaifu, await waifuMAL];
+    const selectedWaifu = waifus[Math.floor(Math.random() * waifus.length)];
+    const title = (await waifuAnilist).title;
+    return NextResponse.json({selectedWaifu, title});
   }
   catch(err){
     return NextResponse.json({
