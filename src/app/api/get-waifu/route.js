@@ -55,7 +55,7 @@ export async function POST(){
     const characters = media.flatMap(media => media.characters.nodes);
     const waifus = characters.filter(char => char.gender === "Female");
     const selectedWaifu = waifus[Math.floor(Math.random() * waifus.length)];
-    const title = waifus.media?.nodes?.[0].title.english; // check if the waifu is fetched from anilist api, it will search for the title
+    const title = selectedWaifu.media?.nodes?.[0].title.english; // check if the waifu is fetched from anilist api, it will search for the title
 
     return {selectedWaifu, title};
   }
@@ -83,7 +83,7 @@ export async function POST(){
     ]);
     const waifus = [anilistWaifu.selectedWaifu, malWaifu];
     const selectedWaifu = waifus[Math.floor(Math.random() * waifus.length)];
-    const title = (await waifuAnilist).title;
+    const title = anilistWaifu.title;
     return NextResponse.json({selectedWaifu, title});
   }
   catch(err){
@@ -92,3 +92,5 @@ export async function POST(){
     }, {status : 500});
   }
 }
+
+//waifuAnilist

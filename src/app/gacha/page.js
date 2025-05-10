@@ -17,7 +17,8 @@ export default function Gacha(){
             });
             const data = await res.json();
             setWaifu(data.selectedWaifu);
-            setTitle(data.selectedWaifu.anime[0]?.anime?.title ? data.selectedWaifu.anime[0]?.anime?.title : data.title);
+            setTitle(data.selectedWaifu.anime ? data.selectedWaifu.anime[0]?.anime?.title : data.title);
+            console.log(data.title)
         }
         catch(err){ 
             console.log(err);
