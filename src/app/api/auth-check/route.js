@@ -7,7 +7,7 @@ export async function GET(req){
     if(!token){
         return NextResponse.json({
             loggedIn : false,
-        }, { status : 401 });
+        });
     }
     try{
         jwt.verify(token, process.env.SECRET_KEY);

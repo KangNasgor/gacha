@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+
 export default function Gacha(){
     const [waifu, setWaifu] = useState(null);
     const [title, setTitle] = useState(null);
@@ -39,6 +40,13 @@ export default function Gacha(){
         }
         return () => window.removeEventListener("click", closeModal);
     }, []);
+
+    useEffect(() => {
+        const fetchid = async () => {
+            await fetch('/api/auth-check/user_id', {method : "GET"});
+        }
+        fetchid();
+    }, []);
     return(
         <div className="h-screen bg-texture-1 pt-5">
             <div className="mx-auto rounded-md bg-red-400 p-2 w-3/12 min-h-[500px] flex flex-col justify-evenly">
@@ -53,7 +61,10 @@ export default function Gacha(){
                     <div className='text-center'>
                         <h1 className="font-fun text-4xl text-center">{waifu.name.full ? waifu.name.full : waifu.name}</h1>
                         <h1 className="font-fun text-lg text-white/75 text-center mb-5">{title ? title : 'Unknown'}</h1>
-                        <button className="bg-red-500 px-4 py-2 rounded-md font-fun text-xl" onClick={() => setModal(prev => !prev)}>Details</button>
+                        <div className="flex gap-5 justify-center">
+                            <button className="bg-red-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90" onClick={() => setModal(prev => !prev)}>Details</button>
+                            <button className="bg-green-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90">Save</button>
+                        </div>
                     </div>  
                 )}
                 {modal && (
@@ -76,7 +87,7 @@ export default function Gacha(){
                     </div>
                 )}
             </div>
-            <button onClick={getWaifu} className="font-fun block mx-auto mt-5 bg-red-400 rounded-md px-4 py-2 text-4xl" disabled={loading === true ? true : false}>GACHA</button>
+            <button onClick={getWaifu} className="font-fun block mx-auto mt-5 cursor-pointer active:scale-90 bg-red-400 rounded-md px-4 py-2 text-4xl" disabled={loading === true ? true : false}>GACHA</button>
         </div>
     );
 }

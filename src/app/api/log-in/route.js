@@ -38,7 +38,14 @@ export async function POST(req){
         secure : true,
         sameSite : 'strict',
         maxAge : 60 * 60 * 48
-    })
+    });
+
+    (await cookies()).set('user_id', rows[0].id, {
+        httpOnly : true,
+        secure : true,
+        sameSite : 'strict',
+        maxAge : 60 * 60 * 48,
+    });
 
     return NextResponse.json({
         success : true,

@@ -7,9 +7,9 @@ export async function POST(){
   query ($page : Int){
     Page(page : $page, perPage : 25) {
       media(sort : START_DATE_DESC, type : ANIME) {
-        id
         characters(perPage : 50) {
           nodes {
+            id
             name {
               full
               native
