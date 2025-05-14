@@ -19,7 +19,6 @@ export default function Gacha(){
             const data = await res.json();
             setWaifu(data.selectedWaifu);
             setTitle(data.selectedWaifu.anime ? data.selectedWaifu.anime[0]?.anime?.title : data.title);
-            console.log(data.title)
         }
         catch(err){ 
             console.log(err);
@@ -41,12 +40,25 @@ export default function Gacha(){
         return () => window.removeEventListener("click", closeModal);
     }, []);
 
-    useEffect(() => {
-        const fetchid = async () => {
-            await fetch('/api/auth-check/user_id', {method : "GET"});
+    const saveWaifu = async () => {
+        const res = await fetch('/api/save-waifu', {
+            method : "POST",
+            headers : {
+                'Content-Type' : 'application/json',
+                Accept : 'application/json',
+            },
+            body : JSON.stringify({
+                waifu : waifu?.id || waifu?.mal_id,
+                type : waifu?.id ? 'ani' : 'mal'
+            }),
+        });
+        const data = await res.json();
+        if(data.success === false){
+            return console.log('Gagal menyimpan waifu');
         }
-        fetchid();
-    }, []);
+        return console.log('Berhasil menyimpan waifu');
+    }
+
     return(
         <div className="h-screen bg-texture-1 pt-5">
             <div className="mx-auto rounded-md bg-red-400 p-2 w-3/12 min-h-[500px] flex flex-col justify-evenly">
@@ -63,7 +75,7 @@ export default function Gacha(){
                         <h1 className="font-fun text-lg text-white/75 text-center mb-5">{title ? title : 'Unknown'}</h1>
                         <div className="flex gap-5 justify-center">
                             <button className="bg-red-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90" onClick={() => setModal(prev => !prev)}>Details</button>
-                            <button className="bg-green-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90">Save</button>
+                            <button className="bg-green-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90" onClick={saveWaifu}>Save</button>
                         </div>
                     </div>  
                 )}
@@ -87,7 +99,7 @@ export default function Gacha(){
                     </div>
                 )}
             </div>
-            <button onClick={getWaifu} className="font-fun block mx-auto mt-5 cursor-pointer active:scale-90 bg-red-400 rounded-md px-4 py-2 text-4xl" disabled={loading === true ? true : false}>GACHA</button>
+            <button onClick={getWaifu} className="font-fun block mx-auto mt-5 hover:scale-110 cursor-pointer active:scale-100 transition-all duration-200 bg-red-400 rounded-md px-4 py-2 text-4xl" disabled={loading === true ? true : false}>GACHA</button>
         </div>
     );
 }
