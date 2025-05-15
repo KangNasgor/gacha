@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
+import AlertModal from "../lib/alert";
 
 export default function Gacha(){
     const [waifu, setWaifu] = useState(null);
@@ -54,11 +54,10 @@ export default function Gacha(){
         });
         const data = await res.json();
         if(data.success === false){
-            return console.log('Gagal menyimpan waifu');
+            AlertModal.show('Failed', 'Gagal menyimpan waifu!');
         }
-        return console.log('Berhasil menyimpan waifu');
+        AlertModal.show('Success', 'Berhasil menyimpan waifu!');
     }
-
     return(
         <div className="h-screen bg-texture-1 pt-5">
             <div className="mx-auto rounded-md bg-red-400 p-2 w-3/12 min-h-[500px] flex flex-col justify-evenly">
@@ -80,8 +79,8 @@ export default function Gacha(){
                     </div>  
                 )}
                 {modal && (
-                    <div className="bg-black/50 top-0 left-0 h-screen w-full pt-10 fixed gacha-result-container-animation-open z-50 modal">
-                        <div className="mx-auto rounded-md bg-red-400 p-5 w-10/12 flex overflow-hidden gacha-result-animation-open">
+                    <div className="bg-black/50 top-0 left-0 h-screen w-full pt-10 fixed modal-container-open z-50 modal">
+                        <div className="mx-auto rounded-md bg-red-400 p-5 w-10/12 flex overflow-hidden modal-open">
                             <div className="w-4/12 relative aspect-square">
                                 <Image src={waifu?.images?.webp?.image_url || waifu?.image?.medium} alt={`Image of ${waifu.name.full}`} fill sizes="(max-width : 768px) 100vw, (max-width : 1200px) 50vw, 33vw" priority className="object-contain"/>
                             </div>

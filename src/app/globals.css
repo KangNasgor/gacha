@@ -67,7 +67,7 @@ body {
   scrollbar-width: none;
 }
 
-@keyframes gachaResultModalAnimationStart {
+@keyframes modalAnimationStart {
   0%{
     opacity: 0.5;
     scale: 0;
@@ -78,7 +78,7 @@ body {
   }
 }
 
-@keyframes gachaResultModalAnimationFinish {
+@keyframes modalAnimationFinish {
   0%{
     opacity: 1;
     scale: 1;
@@ -89,7 +89,7 @@ body {
   }
 }
 
-@keyframes gachaResultContainerAnimationStart {
+@keyframes modalContainerAnimationStart {
   0%{
     opacity: 0;
   }
@@ -98,7 +98,7 @@ body {
   }
 }
 
-@keyframes gachaResultContainerAnimationFinish {
+@keyframes modalContainerAnimationFinish {
   0%{
     opacity: 1;
   }
@@ -107,16 +107,16 @@ body {
   }
 }
 
-.gacha-result-animation-open {
-  animation : gachaResultModalAnimationStart 0.5s forwards;
+.modal-open {
+  animation : modalAnimationStart 0.5s forwards;
 }
-.gacha-result-animation-close {
-  animation : gachaResultModalAnimationFinish 0.5s forwards;
+.modal-close {
+  animation : modalAnimationFinish 0.5s forwards;
 }
 
-.gacha-result-container-animation-open {
-  animation: gachaResultContainerAnimationStart 0.5s forwards;
+.modal-container-open {
+  animation: modalContainerAnimationStart 0.5s forwards;
 }
-.gacha-result-container-animation-close {
-  animation: gachaResultContainerAnimationFinish 0.5s forwards;
+.modal-container-close {
+  animation: modalContainerAnimationFinish 0.5s forwards;
 }
