@@ -16,8 +16,10 @@ const AlertModal = {
         this.modal.innerHTML = 
             `<div class="bg-white w-5/12 rounded-md text-center p-5 font-fun modal-open">
                 <h1 class="text-red-600 text-4xl mb-6">${title}</h1>
-                <p class="text-red-500 text-2xl">${message}</p>
+                <p class="text-red-500 text-2xl mb-5">${message}</p>
+                <button class="bg-red-500 rounded-md px-4 py-2 font-fun cursor-pointer active:scale-90" id="alert-close">Close</button>
             </div>`;
+        document.getElementById('alert-close').onclick = () => this.hide();
         this.modal.style.display = 'flex';
     },
     hide(){
