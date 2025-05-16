@@ -12,6 +12,7 @@ export default function Gacha(){
 
     const getWaifu = async () => {
         setLoading(true);
+        setWaifu(null);
         try{
             const res = await fetch('/api/get-waifu', {
                 method : "POST"
@@ -54,9 +55,9 @@ export default function Gacha(){
         });
         const data = await res.json();
         if(data.success === false){
-            AlertModal.show('Failed', 'Gagal menyimpan waifu!');
+            return AlertModal.show('Failed', data.message);
         }
-        AlertModal.show('Success', 'Berhasil menyimpan waifu!');
+        return AlertModal.show('Success', data.message);
     }
     return(
         <div className="h-screen bg-texture-1 pt-5">
@@ -64,11 +65,16 @@ export default function Gacha(){
                 <div className="rounded-md bg-red-300 p-5 h-[300px] w-full flex relative overflow-hidden">
                     <Image src={waifu?.images?.webp?.image_url || waifu?.image?.medium || "/assets/yae-miko.png"} fill alt="cover" sizes="(max-width : 768px) 100vw, (max-width : 1200px) 50vw, 33vw" priority className="object-cover"/>
                 </div>
-                <div className={`mt-3 text-center ${waifu ? 'hidden' : 'block'}`}>
+                <div className={`mt-3 text-center ${waifu ? 'hidden' : loading ? 'hidden' : 'block'}`}>
                     <h1 className="font-fun text-3xl text-center">Your waifu will appear here</h1>
                     <h1 className="font-fun text-xl">Press the "Gacha" button to start!</h1>
                 </div>
-                {waifu && (
+                {loading && (
+                    <div className="text-center">
+                        <h1 className="font-fun text-3xl">Pulling your char...</h1>
+                    </div>
+                )}
+                {waifu && !loading && (
                     <div className='text-center'>
                         <h1 className="font-fun text-4xl text-center">{waifu.name.full ? waifu.name.full : waifu.name}</h1>
                         <h1 className="font-fun text-lg text-white/75 text-center mb-5">{title ? title : 'Unknown'}</h1>
