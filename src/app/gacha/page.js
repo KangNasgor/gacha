@@ -3,12 +3,19 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import AlertModal from "../lib/alert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBriefcase, faDice, faUser } from "@fortawesome/free-solid-svg-icons";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Gacha(){
     const [waifu, setWaifu] = useState(null);
     const [title, setTitle] = useState(null);
     const [loading, setLoading] = useState(false);
     const [modal, setModal] = useState(false);
+    const [collapse, setCollapse] = useState(true);
+
+    const pathname = usePathname();
 
     const getWaifu = async () => {
         setLoading(true);
@@ -60,7 +67,35 @@ export default function Gacha(){
         return AlertModal.show('Success', data.message);
     }
     return(
-        <div className="h-screen bg-texture-1 pt-5">
+        <div className="h-screen relative bg-texture-1 pt-5">
+            <div className={`${collapse ? 'w-10' : 'w-36'} overflow-hidden bg-red-400 h-screen absolute top-0 z-40 pt-5 shadow-2xl rounded-r-lg transform transition-all duration-200`} onClick={() => setCollapse((prev) => !prev)}>
+                <div className="w-36 p-2 rounded-md flex justify-start overflow-hidden h-8 transform transition-all duration-200 mb-3 relative">
+                    <div className="flex gap-3 justify-center items-center absolute top-0 left-1.5">
+                        <div className="relative w-7 h-7">
+                            <Image src='/assets/malenia.jpg' fill={true} sizes="(max-width : 768px) 20vw, 5vw" alt="Malenia, Blade of Miquella" className="object-cover object-right rounded-full"/>
+                        </div>
+                        <h1 className={`font-fun text-md text-white`}>Gacha Waifu</h1>
+                    </div>
+                </div>
+                <Link href={'/profile'} className={`w-full px-2 py-3 ${pathname === '/profile' ? 'bg-red-500/70' : 'bg-none'} cursor-pointer rounded-md flex justify-start overflow-hidden h-8 transform transition-all duration-200 mb-3 active:scale-95`}>
+                    <div className="flex gap-5 justify-center items-center">
+                        <FontAwesomeIcon icon={faUser} className="text-xl"/>
+                        <h1 className={`font-fun text-lg text-white`}>Profile</h1>
+                    </div>
+                </Link>
+                <Link href={'/inventory'} className={`w-full px-2 py-3 ${pathname === '/inventory' ? 'bg-red-500/70' : 'bg-none'} cursor-pointer rounded-md flex justify-start overflow-hidden h-8 transform transition-all duration-200 mb-3 active:scale-95`}>
+                    <div className="flex gap-5 justify-around items-center">
+                        <FontAwesomeIcon icon={faBriefcase} className="text-xl"/>
+                        <h1 className={`font-fun text-lg text-white`}>Inventory</h1>
+                    </div>
+                </Link>
+                <Link href={'/gacha'} className={`w-full px-2 py-3 ${pathname === '/gacha' ? 'bg-red-500/70' : 'bg-none'} cursor-pointer rounded-md flex justify-start overflow-hidden h-8 transform transition-all duration-200 mb-3 active:scale-95`}>
+                    <div className="flex gap-5 justify-around items-center">
+                        <FontAwesomeIcon icon={faDice} className="text-xl"/>
+                        <h1 className={`font-fun text-lg text-white`}>Gacha</h1>
+                    </div>
+                </Link>
+            </div>
             <div className="mx-auto rounded-md bg-red-400 p-2 w-3/12 min-h-[500px] flex flex-col justify-evenly">
                 <div className="rounded-md bg-red-300 p-5 h-[300px] w-full flex relative overflow-hidden">
                     <Image src={waifu?.images?.webp?.image_url || waifu?.image?.medium || "/assets/yae-miko.png"} fill alt="cover" sizes="(max-width : 768px) 100vw, (max-width : 1200px) 50vw, 33vw" priority className="object-cover"/>
