@@ -1,3 +1,5 @@
+'use client'
+import { useEffect } from "react";
 import Sidebar from "../lib/sidebar";
 
 export default function Profile(){
