@@ -20,7 +20,6 @@ export default function Gacha(){
             });
             const data = await res.json();
             setWaifu(data.selectedWaifu);
-            setTitle(data.selectedWaifu.anime ? data.selectedWaifu.anime[0]?.anime?.title : data.title);
         }
         catch(err){ 
             console.log(err);
@@ -79,7 +78,7 @@ export default function Gacha(){
                 {waifu && !loading && (
                     <div className='text-center'>
                         <h1 className="font-fun text-4xl text-center">{waifu.name.full ? waifu.name.full : waifu.name}</h1>
-                        <h1 className="font-fun text-lg text-white/75 text-center mb-5">{title ? title : 'Unknown'}</h1>
+                        <h1 className="font-fun text-lg text-white/75 text-center mb-5">{waifu?.media?.nodes?.[0]?.title?.english ? waifu?.media?.nodes?.[0]?.title?.english : waifu?.anime?.[0]?.anime?.title ?? 'Unknown'}</h1>
                         <div className="flex gap-5 justify-center">
                             <button className="bg-red-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90" onClick={() => setModal(prev => !prev)}>Details</button>
                             <button className="bg-green-500 px-4 py-2 rounded-md font-fun text-xl cursor-pointer active:scale-90" onClick={saveWaifu}>Save</button>
@@ -95,7 +94,7 @@ export default function Gacha(){
                             <div className="w-8/12">
                                 <h1 className="font-fun text-4xl">{waifu.name.full ? waifu.name.full : waifu.name}</h1>
                                 <h1 className="font-fun text-2xl">{waifu.name.native ? waifu.name.full : waifu.name_kanji ? waifu.name_kanji : 'Unknown'}</h1>
-                                <h1 className="font-fun text-2xl">Anime : {title === null ? 'null' : title}</h1>
+                                <h1 className="font-fun text-2xl">Anime : {waifu?.media?.nodes?.[0]?.title?.english ? waifu?.media?.nodes?.[0]?.title?.english : waifu?.anime?.[0]?.anime?.title ?? 'Unknown'}</h1>
                                 <h1 className="font-fun text-xl">Gender : {waifu.gender ? waifu.gender : '-'}</h1>
                                 <h1 className="font-fun text-lg mt-3">Description :</h1>
                                 <div className={`h-[200px] overflow-y-scroll hide-scrollbar`}>

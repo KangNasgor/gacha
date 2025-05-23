@@ -46,7 +46,7 @@ export async function GET(){
                     }),
                 })
                 .then(res => res.json())
-                .then(res => res.data.Character ? res.data.Character : null);
+                .then(res => res.data?.Character ? res.data?.Character : null);
             })
         );
         return NextResponse.json({

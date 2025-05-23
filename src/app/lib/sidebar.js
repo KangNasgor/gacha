@@ -11,7 +11,7 @@ export default function Sidebar(){
     const [collapse, setCollapse] = useState(true);
 
     return(
-        <div className={`${collapse ? 'w-10' : 'w-36'} overflow-hidden bg-red-400 h-screen absolute top-0 z-40 pt-5 shadow-2xl rounded-r-lg transform transition-all duration-200`}>
+        <div className={`${collapse ? 'w-10' : 'w-36'} overflow-hidden bg-red-400 h-screen fixed top-0 z-40 pt-5 shadow-2xl rounded-r-lg transform transition-all duration-200`}>
             <div className="w-36 p-2 rounded-md flex justify-start overflow-hidden h-8 transform transition-all duration-200 mb-3 relative">
                 <div className="flex gap-3 justify-center items-center absolute top-0 left-1.5">
                     <div className="relative w-7 h-7">

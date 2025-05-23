@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import Sidebar from "../lib/sidebar";
+import Image from "next/image";
 
 export default function Inventory(){
     const [inventory, setInventory] = useState(null);
@@ -13,15 +14,16 @@ export default function Inventory(){
 
         fetchInv();
     }, []);
-    useEffect(() => console.log(inventory), [inventory]);
     return(
-        <div className="h-screen bg-texture-1">
+        <div className="min-h-screen h-fit py-10 bg-texture-1">
             <Sidebar />
-            <div className="flex gap-5 font-fun mx-auto w-10/12">
+            <div className="grid grid-cols-5 gap-5 font-fun p-4 mx-auto w-11/12 bg-red-300 rounded-md">
             {
                 inventory && inventory.map(waifu => (
-                    <div key={waifu.id}>
-                        <h1 className="text-2xl">{waifu.name.full}</h1>
+                    <div key={waifu?.id} className="bg-red-400 rounded-md px-2 pt-2 py-4">
+                        <Image src={waifu?.image.medium} height={300} width={200} alt={'Waifu image'} className="mb-4 rounded-md"/>
+                        <h1 className="text-3xl">{waifu?.name.full}</h1>
+                        <h2 className="text-md text-white/70">{waifu?.media?.nodes?.[0]?.title?.english ? waifu?.media?.nodes?.[0]?.title.english : waifu?.anime?.[0].anime.title ?? 'Unknown'}</h2>
                     </div>
                 ))
             }
