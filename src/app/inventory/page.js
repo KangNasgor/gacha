@@ -9,6 +9,7 @@ export default function Inventory(){
         const fetchInv = async () => {
             const res = await fetch('/api/get-inventory');
             const data = await res.json();
+            console.log(data);
             setInventory(await data.inventory);
         }
 

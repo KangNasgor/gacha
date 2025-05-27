@@ -9,7 +9,7 @@ export default async function middleware(req){
     if(pathname === '/') {
         
     }
-    if(pathname === '/gacha') {
+    if(pathname === '/gacha' || pathname === '/inventory') {
         const cookie = await cookies();
         const token = cookie.get('token')?.value;
         if (!token){
@@ -29,5 +29,5 @@ export default async function middleware(req){
 }
 
 export const config = {
-    matcher : ['/gacha/:path*', '/'],
+    matcher : ['/gacha/:path*', '/', '/inventory'],
 }
