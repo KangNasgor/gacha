@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 
 export async function GET(){
     const connection = await connectDB();
+    const cache = {};
     try{
         const user_id = (await cookies()).get('user_id')?.value;
         const [waifu_ids_ani] = await connection.execute('SELECT * FROM user_waifus WHERE user_id = ? AND type = "ani"', [user_id]);
@@ -51,6 +52,15 @@ export async function GET(){
         .then(res => res.json())
         .then(res => Object.values(res.data));
 
+        const user_inventory = `user_inventory_${user_id}`;
+
+        if(cache[user_inventory]){
+            const inventory = cache[user_inventory];
+            return NextResponse.json({
+                success : true,
+                inventory : inventory,
+            });
+        }
         const responseMal = await Promise.all(
             waifusMal.map(id => {
                 return fetch(`https://api.jikan.moe/v4/characters/${id}/full`, {
@@ -63,10 +73,21 @@ export async function GET(){
                 .then(res => res.data);
             })
         );
+
         const waifus = [...responseAni, ...responseMal];
+
+        const inventory = waifus.sort((a, b) => { // sorting all the waifus alphabetically
+            const nameA = a.name?.full || a.name;
+            const nameB = b.name?.full || b.name;
+            return nameA.localeCompare(nameB);
+        });
+        cache[user_inventory] = inventory;
+        setTimeout(() => {
+            delete cache[user_inventory]
+        }), 120000;
         return NextResponse.json({
             success : true,
-            inventory : waifus
+            inventory : inventory
         });
     }
     catch(err){
