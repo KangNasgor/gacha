@@ -5,6 +5,8 @@ import Image from "next/image";
 
 export default function Inventory(){
     const [inventory, setInventory] = useState(null);
+    const [user, setUser] = useState('');
+
     useEffect(() => {
         const fetchInv = async () => {
             const res = await fetch('/api/get-inventory');
@@ -14,9 +16,19 @@ export default function Inventory(){
 
         fetchInv();
     }, []);
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await fetch('/api/get-user');
+            const data = await res.json();
+            setUser(data.user[0].username);
+        }
+
+        fetchUser();
+    },[]);
     return(
         <div className="min-h-screen h-fit py-10 bg-texture-1">
             <Sidebar />
+            <h1 className="font-fun text-4xl ml-12 mb-5">{user}'s inventory</h1>
             <div className="grid grid-cols-5 gap-5 font-fun p-4 mx-auto w-11/12 bg-red-300 rounded-md">
             {
                 inventory && inventory.map(waifu => (
