@@ -12,7 +12,6 @@ export async function GET(){
 
         const waifusAni = waifu_ids_ani.map(item => item.waifu_id);
         const waifusMal = waifu_ids_mal.map(item => item.waifu_id);
-
         // Below is a GraphQL query that's using alias to fetch multiple data in one query, the alias is w1,w2, or w3, depends on the index so it's dynamic
         // Using .join('') to make all the characters joined as one string
         const aniQuery = `
@@ -61,21 +60,22 @@ export async function GET(){
                 inventory : inventory,
             });
         }
-        const responseMal = await Promise.all(
-            waifusMal.map(id => {
-                return fetch(`https://api.jikan.moe/v4/characters/${id}/full`, {
-                    headers : {
-                        'Content-Type' : 'application/json',
-                        Accept : 'application/json',
-                    }
-                })
-                .then(res => res.json())
-                .then(res => res.data);
-            })
-        );
+        const responseMal = [];
+        function delay(ms){
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        for(const id of waifusMal){
+            const res = await fetch(`https://api.jikan.moe/v4/characters/${id}/full`, {
+                headers : {
+                    'Content-Type' : 'application/json',
+                    Accept : 'application/json',
+                }
+            }).then(res => res.json());
+            responseMal.push(res.data);
+            await delay(400); 
+        }
 
         const waifus = [...responseAni, ...responseMal];
-
         const inventory = waifus.sort((a, b) => { // sorting all the waifus alphabetically
             const nameA = a.name?.full || a.name;
             const nameB = b.name?.full || b.name;
@@ -84,7 +84,8 @@ export async function GET(){
         cache[user_inventory] = inventory;
         setTimeout(() => {
             delete cache[user_inventory]
-        }), 120000;
+        }, 120000);
+
         return NextResponse.json({
             success : true,
             inventory : inventory

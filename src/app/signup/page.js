@@ -51,12 +51,12 @@ export default function Signup(){
         }
     }
     return(
-        <div className="bg-texture-1 h-screen flex flex-col justify-center items-center">
-            <h1 className="text-5xl font-fun">Daftar dulu</h1>
-            <div className="bg-red-300 rounded-lg flex gap-10 p-4 items-center w-9/12">
+        <div className="bg-texture-1 min-h-screen h-fit py-5 md:py-0 flex flex-col justify-center items-center">
+            <h1 className="text-5xl font-fun mb-5">Sign Up</h1>
+            <div className="bg-red-300 rounded-lg flex flex-col lg:flex-row gap-3 lg:gap-10 p-4 items-center w-9/12 md:w-6/12 lg:w-fit">
                 <Image src='/assets/yae-miko.png' width={400} height={500} alt="Yae Miko" className="rounded-md"/>
                 <form onSubmit={submitForm} className="flex flex-col items-center gap-5">
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                         <div>
                             <h1 className="font-fun text-xl inline-block">Username</h1>
                             <div className="bg-white font-fun text-black px-3 py-1 w-fit rounded-md flex items-center gap-2">

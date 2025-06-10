@@ -38,9 +38,9 @@ export default function Login(){
         }
     }
     return(
-        <div className="bg-texture-1 h-screen flex flex-col gap-4 justify-center items-center">
-            <h1 className="text-5xl font-fun">Login dulu</h1>
-            <div className="bg-red-300 rounded-lg flex p-4 gap-8 items-center justify-start w-6/12">
+        <div className="bg-texture-1 min-h-screen h-fit flex flex-col gap-4 justify-center items-center">
+            <h1 className="text-5xl font-fun">Log In</h1>
+            <div className="bg-red-300 rounded-lg flex flex-col md:flex-row p-4 gap-8 items-center justify-start w-9/12 lg:w-7/12 xl:w-6/12">
                 <div className="relative w-full h-64">
                     <Image src='/assets/malenia.jpg' fill={true} sizes="(max-width : 768px) 100vw, 50vw" alt="Malenia, Blade of Miquella" className="object-cover object-right rounded-md "/>
                 </div>

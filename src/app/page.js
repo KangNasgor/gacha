@@ -38,26 +38,13 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-texture-1 flex justify-center items-center">
-      <div
-        className="flex flex-col items-center bg-[#e57e7e] p-4 rounded-lg"
-        data-aos="fade"
-        data-aos-duration="1000"
-      >
-        <h1
-          className="font-fun text-8xl text-white hover:scale-110 hover:rotate-6"
-          style={{
+      <div className="flex flex-col items-center bg-[#e57e7e] p-4 rounded-lg" data-aos="fade" data-aos-duration="1000">
+        <h1 className="font-fun text-8xl text-center text-white hover:scale-110 hover:rotate-6" style={{
             transition: "0.5s",
-          }}
-          data-aos="fade-down"
-          data-aos-duration="1000"
-        >
+          }} data-aos="fade-down" data-aos-duration="1000">
           Waifu Gacha Website
         </h1>
-        <h1
-          className="font-fun text-xl text-white"
-          data-aos="fade-up"
-          data-aos-duration="1000"
-        >
+        <h1 className="font-fun text-xl text-white" data-aos="fade-up" data-aos-duration="1000">
           Website buat lu para gooners.
         </h1>
         {
