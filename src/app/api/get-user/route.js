@@ -7,7 +7,7 @@ export async function GET(){
     const cookie = cookies();
     try{
         const user_id = (await cookie).get('user_id')?.value;
-        const [user] = await connecttion.execute('SELECT * FROM users WHERE id = ?', [user_id]);
+        const [user] = await connecttion.execute('SELECT username, email FROM users WHERE id = ?', [user_id]);
         return NextResponse.json({
             success : true,
             user : user,

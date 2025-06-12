@@ -82,6 +82,7 @@ export async function GET(){
             return nameA.localeCompare(nameB);
         });
         cache[user_inventory] = inventory;
+
         setTimeout(() => {
             delete cache[user_inventory]
         }, 120000);
