@@ -37,7 +37,7 @@ export default function Inventory(){
         <div className="min-h-screen h-fit py-10 bg-texture-1">
             <Sidebar />
             <h1 className="font-fun text-center md:text-start text-4xl md:ml-12 mb-5">{user}'s inventory</h1>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-5 font-fun p-4 mx-auto w-11/12 bg-red-300 rounded-md">
+            <div className="min-h-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-5 font-fun p-4 mx-auto w-11/12 bg-red-300 rounded-md">
             {
                 inventory && inventory.map(waifu => (
                     <div key={waifu?.id ?? waifu?.mal_id} className="bg-red-400 rounded-md px-2 pt-2 py-4">

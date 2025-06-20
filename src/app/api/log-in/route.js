@@ -1,15 +1,14 @@
-import { connectDB } from "@/app/api/mysql/route";
+import pool from "../mysql/route";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export async function POST(req){
-    const connection = await connectDB();
     const body = await req.json();
     const {username, password} = body;
 
-    const [rows] = await connection.execute(
+    const [rows] = await pool.execute(
         'SELECT * FROM users WHERE username = ?',
         [username]
     );

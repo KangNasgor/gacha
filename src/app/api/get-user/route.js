@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "../mysql/route";
 import { cookies } from "next/headers";
+import pool from "../mysql/route";
 
 export async function GET(){
-    const connecttion = await connectDB();
     const cookie = cookies();
     try{
         const user_id = (await cookie).get('user_id')?.value;
-        const [user] = await connecttion.execute('SELECT username, email FROM users WHERE id = ?', [user_id]);
+        const [user] = await pool.execute('SELECT username, email, picture FROM users WHERE id = ?', [user_id]);
         return NextResponse.json({
             success : true,
             user : user,

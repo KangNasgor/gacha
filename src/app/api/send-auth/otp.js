@@ -1,4 +1,4 @@
-import { connectDB } from "@/app/api/mysql/route";
+import pool from "../mysql/route";
 
 const generateOTP = () => {
     const otp =  Math.floor(100000 + Math.random() * 900000);
@@ -7,18 +7,14 @@ const generateOTP = () => {
 
 const storeOTP = async (email, otp) => {
     const expirationDate = Date.now() + 5 * 60 * 1000;
-    const connection = await connectDB();
-    const [rows] = await connection.execute(
+    const [rows] = await pool.execute(
         'INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)',
         [email, otp, new Date(expirationDate)]
     );
-
-    await connection.end();
 }
 
 const validateOTP = async (email, otp) => {
-    const connection = await connectDB();
-    const [rows] = await connection.execute(
+    const [rows] = await pool.execute(
         'SELECT * FROM otp_codes WHERE email = ?',
         [email]
     );

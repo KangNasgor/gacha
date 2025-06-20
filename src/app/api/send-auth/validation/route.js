@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import { validateOTP } from "../otp";
-import { connectDB } from "@/app/api/mysql/route";
+import pool from "../mysql/route";
 
 export async function POST(req){
     const { email, otp } =  await req.json();
-    const connection = await connectDB();
-    const [rows] = await connection.execute(
+    const [rows] = await pool.execute(
         'SELECT * FROM otp_codes WHERE email = ?',
         [email]
     );
@@ -21,15 +20,14 @@ export async function POST(req){
         if(validation === false){
             return NextResponse.json({ success : false, message : 'OTP kadaluwarsa' });
         }
-        await connection.execute(
+        await pool.execute(
             'UPDATE users SET verified = true WHERE email = ?',
             [email] 
         );
-        await connection.execute(
+        await pool.execute(
             'DELETE FROM otp_codes WHERE email = ?',
             [email]
         );
-        await connection.end();
 
         return NextResponse.json({ success : true, message : 'Account verified' });
     }

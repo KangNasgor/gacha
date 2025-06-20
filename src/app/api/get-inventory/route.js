@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "../mysql/route";
 import { cookies } from "next/headers";
+import pool from "../mysql/route";
 
 export async function GET(){
-    const connection = await connectDB();
     const cache = {};
     try{
         const user_id = (await cookies()).get('user_id')?.value;
-        const [waifu_ids_ani] = await connection.execute('SELECT * FROM user_waifus WHERE user_id = ? AND type = "ani"', [user_id]);
-        const [waifu_ids_mal] = await connection.execute('SELECT * FROM user_waifus where user_id = ? AND type = "mal"', [user_id]);
+        const [waifu_ids_ani] = await pool.execute('SELECT * FROM user_waifus WHERE user_id = ? AND type = "ani"', [user_id]);
+        const [waifu_ids_mal] = await pool.execute('SELECT * FROM user_waifus where user_id = ? AND type = "mal"', [user_id]);
 
         const waifusAni = waifu_ids_ani.map(item => item.waifu_id);
         const waifusMal = waifu_ids_mal.map(item => item.waifu_id);

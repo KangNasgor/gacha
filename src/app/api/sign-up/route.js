@@ -1,13 +1,12 @@
-import { connectDB } from "@/app/api/mysql/route";
+import pool from "../mysql/route";
 import { NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 
 export async function POST(req){
     const body = await req.json();
     const {username, email, password} = body;
-    const connection = await connectDB();
     try{
-        const [sameAccount] = await connection.execute(
+        const [sameAccount] = await pool.execute(
             'SELECT * FROM users WHERE email = ?',
             [email]
         );
@@ -18,7 +17,7 @@ export async function POST(req){
             });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const [rows] = await connection.execute(
+        const [rows] = await pool.execute(
             'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
             [username, email, hashedPassword]
         )
@@ -28,8 +27,6 @@ export async function POST(req){
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify({email})
         })
-
-        await connection.end();
 
         return NextResponse.json({
             success: true,

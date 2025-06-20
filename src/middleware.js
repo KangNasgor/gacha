@@ -29,5 +29,5 @@ export default async function middleware(req){
 }
 
 export const config = {
-    matcher : ['/gacha/:path*', '/', '/inventory'],
+    matcher : ['/gacha/:path*', '/', '/inventory', '/profile'],
 }
