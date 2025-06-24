@@ -5,11 +5,8 @@ import { jwtVerify } from "jose";
 
 export default async function middleware(req){
     const { pathname } = req.nextUrl;
-    
-    if(pathname === '/') {
-        
-    }
-    if(pathname === '/gacha' || pathname === '/inventory') {
+    const paths = ['/gacha', '/inventory', '/profile'];
+    if(paths.includes(pathname)) {
         const cookie = await cookies();
         const token = cookie.get('token')?.value;
         if (!token){
